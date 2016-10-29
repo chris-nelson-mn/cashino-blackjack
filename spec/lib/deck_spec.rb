@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'autoloaded/deck'
 
 RSpec.describe Deck do
   let(:deck) { Deck.new(Deck::DEFAULT_SUITS, Deck::DEFAULT_RANKS) }
@@ -26,7 +25,7 @@ RSpec.describe Deck do
     end
 
     it 'reorders the cards' do
-      expect("#{drawn_card.rank} of #{drawn_card.suit}").to_not eq("ace of spades") 
+      expect("#{drawn_card.rank} of #{drawn_card.suit}").to_not eq("ace of spades")
     end
   end
 end

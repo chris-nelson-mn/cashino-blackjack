@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'autoloaded/card'
 
 RSpec.describe Card do
   subject { Card.new('spade', 'ace') }
