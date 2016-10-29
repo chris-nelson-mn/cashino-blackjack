@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Card do
-  subject { Card.new('spades', 'ace') }
+  subject { Card.new(:spades, :ace) }
 
   it 'returns the correct suit' do
-    expect(subject.suit).to eq('spades')
+    expect(subject.suit).to eq(:spades)
   end
 
   it 'returns the correct rank' do
-    expect(subject.rank).to eq('ace')
+    expect(subject.rank).to eq(:ace)
   end
 
   describe '#to_s' do
