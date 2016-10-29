@@ -1,6 +1,6 @@
 class Deck
   DEFAULT_SUITS = %w(spades clubs diamonds hearts)
-  DEFAULT_RANKS = %w(ace one two three four five six seven eight nine ten jack queen king)
+  DEFAULT_RANKS = %w(ace two three four five six seven eight nine ten jack queen king)
 
   def initialize(suits, ranks)
     @suits = suits
