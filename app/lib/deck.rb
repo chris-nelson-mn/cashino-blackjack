@@ -5,8 +5,6 @@ class Deck
   def initialize(suits=nil, ranks=nil)
     @suits = suits || DEFAULT_SUITS
     @ranks = ranks || DEFAULT_RANKS
-    p @suits
-    p @ranks
     @cards = Array.new
 
     # Top of the deck is the last entry in the array
