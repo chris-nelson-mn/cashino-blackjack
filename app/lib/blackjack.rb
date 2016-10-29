@@ -1,11 +1,9 @@
 class Blackjack
-  attr_reader :players
-
   def initialize(deck)
-    @players = []
+    @deck = deck
   end
 
-  def add_player(player)
-    @players << player
+  def deal
+    Hand.new(@deck, 2)
   end
 end
