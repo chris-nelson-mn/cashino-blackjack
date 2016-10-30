@@ -6,7 +6,6 @@ class Blackjack
 
       score = hand.cards.map { |card| value_for(card, aces_high) }.sum
 
-      p "Scoring with aces: #{options[:aces]}"
       if options[:aces] == :best
         aces_in_hand = hand.cards.detect { |c| c.rank == :ace }.present?
         score += 10 if aces_in_hand && score < 12
@@ -16,7 +15,7 @@ class Blackjack
     end
 
     def busted?(hand)
-      score(hand, aces: :low) > 21
+      score(hand) > 21
     end
 
     private
