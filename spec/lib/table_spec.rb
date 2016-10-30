@@ -41,4 +41,12 @@ RSpec.describe Table do
       it { expect(table.players).to eq([player]) }
     end
   end
+
+  describe '#dealer' do
+    let(:table) { Table.new }
+
+    it 'should return a Dealer' do
+      expect(table.dealer).to be_a(Dealer)
+    end
+  end
 end
