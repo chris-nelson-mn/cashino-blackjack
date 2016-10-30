@@ -25,10 +25,11 @@ RSpec.describe Hand do
   describe '#add' do
     let(:dealt_cards) { [deck.draw, deck.draw] }
     let(:additional_card) { deck.draw }
-    let(:hand) { Hand.new(dealt_cards) }
+    let(:hand) { Hand.new(dealt_cards).add(additional_card) }
 
-    before { hand.add(additional_card) }
-
+    it 'returns the hand' do
+      expect(hand).to be_a(Hand)
+    end
     it 'contains the initial cards plus the one added' do
       expect(hand.cards).to eq(dealt_cards << additional_card)
     end
