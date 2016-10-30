@@ -88,4 +88,50 @@ RSpec.describe Blackjack do
       it { expect(Blackjack.busted?(hand)).to be false }
     end
   end
+
+  describe '.result' do
+    subject { Blackjack.result(player_hand, dealer_hand) }
+
+    context 'where the player has a higher hand than the dealer and neither busted' do
+      let(:player_hand) { Hand.new [Card.new(:ten, :diamonds), Card.new(:nine, :clubs)] }
+      let(:dealer_hand) { Hand.new [Card.new(:ten, :spades), Card.new(:eight, :clubs)] }
+
+      it { is_expected.to eq(:win) }
+    end
+
+    context 'where the player has a lower hand than the dealer and neither busted' do
+      let(:player_hand) { Hand.new [Card.new(:ten, :diamonds), Card.new(:seven, :clubs)] }
+      let(:dealer_hand) { Hand.new [Card.new(:ten, :spades), Card.new(:queen, :clubs)] }
+
+      it { is_expected.to eq(:loss) }
+    end
+
+    context 'where the player busted' do
+      let(:player_hand) { Hand.new [Card.new(:ten, :diamonds), Card.new(:four, :clubs), Card.new(:king, :clubs)] }
+      let(:dealer_hand) { Hand.new [Card.new(:ten, :spades), Card.new(:queen, :clubs)] }
+
+      it { is_expected.to eq(:loss) }
+    end
+
+    context 'where the dealer busted and the player did not' do
+      let(:player_hand) { Hand.new [Card.new(:ten, :diamonds), Card.new(:seven, :clubs)] }
+      let(:dealer_hand) { Hand.new [Card.new(:ten, :spades), Card.new(:five, :clubs), Card.new(:seven, :hearts)] }
+
+      it { is_expected.to eq(:win) }
+    end
+
+    context 'where both player and dealer busted' do
+      let(:player_hand) { Hand.new [Card.new(:ten, :diamonds), Card.new(:four, :clubs), Card.new(:king, :clubs)] }
+      let(:dealer_hand) { Hand.new [Card.new(:ten, :spades), Card.new(:five, :clubs), Card.new(:seven, :hearts)] }
+
+      it { is_expected.to eq(:loss) }
+    end
+
+    context 'where the player and dealer hit the same total' do
+      let(:player_hand) { Hand.new [Card.new(:ten, :diamonds), Card.new(:seven, :clubs)] }
+      let(:dealer_hand) { Hand.new [Card.new(:ten, :spades), Card.new(:seven, :spades)] }
+
+      it { is_expected.to eq(:push) }
+    end
+  end
 end

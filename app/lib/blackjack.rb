@@ -18,6 +18,24 @@ class Blackjack
       score(hand) > 21
     end
 
+    def result(player_hand, dealer_hand)
+      if busted?(player_hand)
+        :loss
+      elsif busted?(dealer_hand)
+        :win
+      else
+        player_score = score(player_hand)
+        dealer_score = score(dealer_hand)
+        if player_score > dealer_score
+          :win
+        elsif player_score < dealer_score
+          :loss
+        else
+          :push
+        end
+      end
+    end
+
     private
 
     def value_for(card, aces_high)
