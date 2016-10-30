@@ -4,6 +4,6 @@ class Blackjack
   end
 
   def deal
-    Hand.new(@deck, 2)
+    @deck.draw
   end
 end
