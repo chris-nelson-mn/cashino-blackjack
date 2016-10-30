@@ -2,9 +2,16 @@ class Deck
   DEFAULT_SUITS = %w(spades clubs diamonds hearts).map(&:to_sym).freeze
   DEFAULT_RANKS = %w(ace two three four five six seven eight nine ten jack queen king).map(&:to_sym).freeze
 
-  def initialize(suits=nil, ranks=nil)
-    @suits = suits || DEFAULT_SUITS
-    @ranks = ranks || DEFAULT_RANKS
+  def initialize(options={})
+    default_options = {
+      suits: DEFAULT_SUITS,
+      ranks: DEFAULT_RANKS,
+      shuffled: false
+    }
+    options.reverse_merge!(default_options)
+
+    @suits = options[:suits]
+    @ranks = options[:ranks]
     @cards = Array.new
 
     # Top of the deck is the last entry in the array
@@ -14,6 +21,8 @@ class Deck
         @cards << Card.new(rank, suit)
       end
     end
+
+    self.shuffle if options[:shuffled]
   end
 
   def draw
@@ -22,5 +31,7 @@ class Deck
 
   def shuffle
     @cards.shuffle!
+
+    self
   end
 end
