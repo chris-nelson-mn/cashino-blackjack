@@ -35,18 +35,30 @@ RSpec.describe Blackjack do
     end
 
     context 'with a hand that has an ace' do
-      let(:hand) { Hand.new [Card.new(:ace, :clubs), Card.new(:five, :diamonds)] }
+      let(:one_ace_hand) { Hand.new [Card.new(:ace, :clubs), Card.new(:five, :diamonds)] }
+      let(:two_ace_hand) { Hand.new [Card.new(:ace, :spades), Card.new(:ace, :clubs), Card.new(:five, :diamonds)] }
 
-      context 'with default treatment of aces (scored as 1)' do
-        it { expect(Blackjack.score(hand)).to eq(6) }
+      context 'with default treatment of aces (best hand)' do
+        it { expect(Blackjack.score(one_ace_hand)).to eq(16) }
+        it { expect(Blackjack.score(two_ace_hand)).to eq(17) }
+      end
+
+      context 'with aces scored to make the best hand' do
+        let(:busted_ace_hand) { Hand.new [Card.new(:ace, :clubs), Card.new(:seven, :diamonds), Card.new(:five, :clubs), Card.new(:ten, :clubs)] }
+
+        it { expect(Blackjack.score(one_ace_hand, aces: :best)).to eq(16) }
+        it { expect(Blackjack.score(two_ace_hand, aces: :best)).to eq(17) }
+        it { expect(Blackjack.score(busted_ace_hand, aces: :best)).to eq(23) }
       end
 
       context 'with aces treated as 1' do
-        it { expect(Blackjack.score(hand, aces_high: false)).to eq(6) }
+        it { expect(Blackjack.score(one_ace_hand, aces: :low)).to eq(6) }
+        it { expect(Blackjack.score(two_ace_hand, aces: :low)).to eq(7) }
       end
 
       context 'with aces treated as 11' do
-        it { expect(Blackjack.score(hand, aces_high: true)).to eq(16) }
+        it { expect(Blackjack.score(one_ace_hand, aces: :high)).to eq(16) }
+        it { expect(Blackjack.score(two_ace_hand, aces: :high)).to eq(27) }
       end
     end
   end

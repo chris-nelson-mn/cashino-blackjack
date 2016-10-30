@@ -1,21 +1,30 @@
 class Blackjack
   class << self
     def score(hand, options={})
-      options.reverse_merge({ aces_high: false })
+      options.reverse_merge!({ aces: :best })
+      aces_high = options[:aces] == :high
 
-      hand.cards.map { |card| value_for(card, options[:aces_high]) }.sum
+      score = hand.cards.map { |card| value_for(card, aces_high) }.sum
+
+      p "Scoring with aces: #{options[:aces]}"
+      if options[:aces] == :best
+        aces_in_hand = hand.cards.detect { |c| c.rank == :ace }.present?
+        score += 10 if aces_in_hand && score < 12
+      end
+
+      score
     end
 
     def busted?(hand)
-      score(hand, aces_high: false) > 21
+      score(hand, aces: :low) > 21
     end
 
     private
 
-    def value_for(card, ace_high)
+    def value_for(card, aces_high)
       case card.rank
       when :ace
-        ace_high ? 11 : 1
+        aces_high ? 11 : 1
       when :two
         2
       when :three
@@ -32,7 +41,7 @@ class Blackjack
         8
       when :nine
         9
-      when :jack, :queen, :king
+      when :ten, :jack, :queen, :king
         10
       else
         fail "#{card.rank} is not a legal card rank in Blackjack"
