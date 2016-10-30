@@ -16,6 +16,6 @@ RSpec::Matchers.define :have_attr_accessor_for do |field|
   end
 
   description do
-    "assert there is an attr_accessor for #{field}"
+    "implement attr_accessor for #{field}"
   end
 end
