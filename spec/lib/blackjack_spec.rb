@@ -21,6 +21,7 @@ RSpec.describe Blackjack do
 
   describe '.score' do
     subject { Blackjack.score(hand) }
+
     context 'with a hand that has numeric cards' do
       let(:hand) { Hand.new [Card.new(:eight, :clubs), Card.new(:five, :clubs)] }
 
@@ -47,6 +48,32 @@ RSpec.describe Blackjack do
       context 'with aces treated as 11' do
         it { expect(Blackjack.score(hand, aces_high: true)).to eq(16) }
       end
+    end
+  end
+
+  describe '.busted?' do
+    context 'for a hand valued over 21' do
+      let(:hand) { Hand.new [Card.new(:queen, :clubs), Card.new(:five, :clubs), Card.new(:king, :hearts)] }
+
+      it { expect(Blackjack.busted?(hand)).to be true }
+    end
+
+    context 'for a hand valued 21' do
+      let(:hand) { Hand.new [Card.new(:queen, :clubs), Card.new(:five, :clubs), Card.new(:six, :hearts)] }
+
+      it { expect(Blackjack.busted?(hand)).to be false }
+    end
+
+    context 'for a hand valued less than 21' do
+      let(:hand) { Hand.new [Card.new(:queen, :clubs), Card.new(:five, :clubs)] }
+
+      it { expect(Blackjack.busted?(hand)).to be false }
+    end
+
+    context 'for a hand with an ace that could score as 12 or 22' do
+      let(:hand) { Hand.new [Card.new(:six, :clubs), Card.new(:five, :clubs), Card.new(:ace, :hearts)] }
+
+      it { expect(Blackjack.busted?(hand)).to be false }
     end
   end
 end

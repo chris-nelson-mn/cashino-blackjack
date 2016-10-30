@@ -6,6 +6,10 @@ class Blackjack
       hand.cards.map { |card| value_for(card, options[:aces_high]) }.sum
     end
 
+    def busted?(hand)
+      score(hand, aces_high: false) > 21
+    end
+
     private
 
     def value_for(card, ace_high)
