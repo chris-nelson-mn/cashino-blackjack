@@ -1,8 +1,11 @@
 class Hand
   attr_reader :cards
 
-  def initialize(deck, size)
-    @cards = []
-    size.times { @cards << deck.draw } 
+  def initialize(cards=nil)
+    @cards = cards || [] 
+  end
+
+  def add(card)
+    @cards << card
   end
 end

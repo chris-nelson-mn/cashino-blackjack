@@ -4,23 +4,33 @@ RSpec.describe Hand do
   let(:deck) { Deck.new }
 
   describe '.new' do
-    let(:hand_size) { 2 }
-    let(:hand) { Hand.new(deck, hand_size) }
+    it 'accepts zero arguments and returns a Hand' do
+      expect(Hand.new).to be_a(Hand)
+    end
 
-    it 'takes a deck and hand size, returns a Hand' do
-      expect(hand).to be_a(Hand)
+    it 'accepts an array of cards and returns a Hand' do
+      expect(Hand.new([deck.draw, deck.draw])).to be_a(Hand)
     end
   end
 
   describe '#cards' do
-    let(:hand_size) { 2 }
-    let(:hand) { Hand.new(deck, hand_size) }
+    let(:dealt_cards) { [deck.draw, deck.draw] }
+    let(:hand) { Hand.new(dealt_cards) }
 
     it 'returns the cards in the hand' do
-      expect(hand.cards.first).to be_a(Card) 
+      expect(hand.cards).to eq(dealt_cards)
     end
-    it 'contains the number of cards specified' do
-      expect(hand.cards.length).to eq(hand_size)
+  end
+
+  describe '#add' do
+    let(:dealt_cards) { [deck.draw, deck.draw] }
+    let(:additional_card) { deck.draw }
+    let(:hand) { Hand.new(dealt_cards) }
+
+    before { hand.add(additional_card) }
+
+    it 'contains the initial cards plus the one added' do
+      expect(hand.cards).to eq(dealt_cards << additional_card)
     end
   end
 end
