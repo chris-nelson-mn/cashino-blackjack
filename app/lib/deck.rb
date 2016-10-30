@@ -11,7 +11,7 @@ class Deck
     # Reversing so deck starts with cards in order from least to highest face value
     @suits.reverse.each do |suit|
       @ranks.reverse.each do |rank|
-        @cards << Card.new(suit, rank)
+        @cards << Card.new(rank, suit)
       end
     end
   end

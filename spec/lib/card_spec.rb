@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Card do
-  subject { Card.new(:spades, :ace) }
+  subject { Card.new(:ace, :spades) }
 
   describe '#suit' do
     it 'returns the correct suit' do
