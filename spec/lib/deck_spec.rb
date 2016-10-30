@@ -20,6 +20,7 @@ RSpec.describe Deck do
 
     describe '#draw' do
       let(:drawn_card) { deck.draw }
+
       it 'returns a card, the ace of spades' do
         expect(drawn_card).to be_a(Card)
         expect(drawn_card.suit).to eq(:spades)
@@ -28,13 +29,14 @@ RSpec.describe Deck do
     end
 
     describe '#shuffle' do
-      let(:drawn_card) { deck.draw }
+      let(:first_four) { [deck.draw, deck.draw, deck.draw, deck.draw] }
+
       before do
         deck.shuffle
       end
 
       it 'reorders the cards' do
-        expect("#{drawn_card.rank} of #{drawn_card.suit}").to_not eq("ace of spades")
+        expect(first_four.map(&:to_s).join(', ')).to_not eq("ace of spades, two of spades, three of spades, four of spades")
       end
     end
   end
