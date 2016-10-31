@@ -16,7 +16,7 @@ class Hand
   end
 
   def split
-    fail PlayError, "Can't split a hand of more than 2 cards" if @cards.length != 2
+    raise PlayError, "Can't split a hand of more than 2 cards" if @cards.length != 2
 
     [Hand.new([@cards.first]), Hand.new([@cards.last])]
   end

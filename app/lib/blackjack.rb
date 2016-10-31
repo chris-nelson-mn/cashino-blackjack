@@ -61,7 +61,7 @@ class Blackjack
       when :ten, :jack, :queen, :king
         10
       else
-        fail "#{card.rank} is not a legal card rank in Blackjack"
+        raise PlayError, "#{card.rank} is not a legal card rank in Blackjack"
       end
     end
   end
