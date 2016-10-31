@@ -3,14 +3,28 @@
 This project is intended to be a free and open source Blackjack app
 that can be played in real time by multiple players.
 
+## Design Goals
+
+For version 1 of the app, I'm aiming for the following feature highlights:
+
+* Card / Deck / Hand / Player classes which are decoupled from the rules
+of Blackjack, so they could be re-used to make, say, a Poker game
+* Tables of up to 8 Players, with drop-in, drop-out capability
+* User accounts with a Bank for tracking money. User is connected to a Table via Player.
+* Per-Table game state data channel using ActionCable so games can play out in real time for multiple players
+* Per-Table chat channel using ActionCable for table talk
+* Animated SVG card images which move according to incoming game state changes
+
 ## Project Status
 
+So those design goals should be a lot of fun once hit. But where are we now?
+
 Currently the resources for 'playing' a game via the command line
-are in place, but not the interactive web app functionality. The
+are in place, but not much of the interactive web app functionality. The
 capability to persist deck & hand data so that state is preserved across
 requests is largely in place. There is a Table controller for viewing and
-managing what will be a list of available Blackjack tables. I've started
-to put in some basic views for testing.
+managing what will be a list of available Blackjack tables. The Player controller
+is handling some gameplay actions. I've started to put in some basic views for testing.
 
 ## Getting Started
 
