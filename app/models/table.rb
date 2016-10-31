@@ -1,5 +1,5 @@
 class Table < ApplicationRecord
-  has_many :players
+  has_many :players, dependent: :destroy
 
   before_create :setup
   before_save :marshall_card_data
@@ -12,6 +12,7 @@ class Table < ApplicationRecord
 
     players.each_with_index { |p, i| p.hand = hands[i] }
     @dealer_hand = hands.last
+    save
 
     self
   end
