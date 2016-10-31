@@ -1,6 +1,6 @@
 p "Clearing out existing data..."
-Table.delete_all
 Player.delete_all
+Table.delete_all
 
 p "Seeding the database..."
 t1 = Table.create
