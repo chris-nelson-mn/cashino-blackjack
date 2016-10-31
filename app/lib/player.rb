@@ -16,6 +16,10 @@ class Player
     @hands[@active_hand]
   end
 
+  def hand=(hand)
+    self.hands = [hand]
+  end
+
   def next_hand
     @active_hand += 1
     hand

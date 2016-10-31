@@ -11,8 +11,9 @@ RSpec.describe Player do
   it { is_expected.to have_attr_accessor_for(:bet) }
   it { is_expected.to have_attr_reader_for(:hands) }
 
+  let(:deck) { Deck.new(shuffled: true) }
+
   describe '#hands=' do
-    let(:deck) { Deck.new(shuffled: true) }
     let(:player) { Player.new.tap { |p| p.hands = [deck.deal(2), deck.deal(2)] } }
     let(:new_hands) { [deck.deal(2), deck.deal(2)] }
 
@@ -29,8 +30,6 @@ RSpec.describe Player do
   end
 
   describe '#next_hand' do
-    let(:deck) { Deck.new(shuffled: true) }
-
     context 'for a player with one hand' do
       let(:player) { Player.new.tap { |p| p.hands = [deck.deal(2)] } }
 
@@ -53,8 +52,6 @@ RSpec.describe Player do
   end
 
   describe '#hand' do
-    let(:deck) { Deck.new(shuffled: true) }
-
     context 'for a player with one hand' do
       let(:player) { Player.new.tap { |p| p.hands = [deck.deal(2)] } }
 
@@ -75,6 +72,20 @@ RSpec.describe Player do
 
         it { expect(player.hand).to eq(player.hands[1]) }
       end
+    end
+  end
+
+  describe '#hand=' do
+    let(:player) { Player.new.tap { |p| p.hands = [deck.deal(2), deck.deal(2)] } }
+    let(:new_hand) { deck.deal(2) }
+    before { player.hand = new_hand }
+
+    it "sets a single new hand as the player's hands" do
+      expect(player.hands).to eq([new_hand])
+    end
+
+    it 'expect the new hand to be the active hand' do
+      expect(player.hand).to eq(new_hand)
     end
   end
 end
