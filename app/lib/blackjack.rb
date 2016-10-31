@@ -1,4 +1,4 @@
-class Blackjack
+module Blackjack
   class << self
     def score(hand, options={})
       options.reverse_merge!({ aces: :best })
@@ -64,13 +64,5 @@ class Blackjack
         raise PlayError, "#{card.rank} is not a legal card rank in Blackjack"
       end
     end
-  end
-
-  def initialize(deck)
-    @deck = deck
-  end
-
-  def deal
-    @deck.draw
   end
 end
