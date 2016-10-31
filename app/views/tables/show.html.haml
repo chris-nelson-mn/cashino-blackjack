@@ -1,4 +1,26 @@
 %p#notice= notice
+
+%table
+  %thead
+    %tr
+      %th Players
+      %th
+  %tbody
+    - @table.players.each_with_index do |player, i|
+      %tr
+        %td
+          %strong="Player #{ i + 1 }:"
+        - player.hand.cards.each do |card|
+          %td
+            =card.to_s
+        %td="-- Score: #{ Blackjack.score(player.hand) }"
+    %tr
+      %td
+        %strong="Dealer:"
+      %td="[card hidden]"
+      %td="#{ @table.dealer_hand.cards.last }"
+
+
 = link_to 'Edit', edit_table_path(@table)
 |
 = link_to 'Back', tables_path
