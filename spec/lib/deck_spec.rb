@@ -16,11 +16,14 @@ RSpec.describe Deck do
 
     context 'with the shuffled option' do
       let(:new_shuffled_deck) { Deck.new(shuffled: true) }
-      let(:first_four) { [new_shuffled_deck.draw, new_shuffled_deck.draw, new_shuffled_deck.draw, new_shuffled_deck.draw] }
+      let(:first_four) do
+        [ new_shuffled_deck.draw, new_shuffled_deck.draw, new_shuffled_deck.draw, new_shuffled_deck.draw ]
+      end
 
       it { expect(new_shuffled_deck).to be_a(Deck) }
       it 'has been shuffled' do
-        expect(first_four.map(&:to_s).join(', ')).to_not eq("ace of spades, two of spades, three of spades, four of spades")
+        default_first_four = "ace of spades, two of spades, three of spades, four of spades"
+        expect(first_four.map(&:to_s).join(', ')).to_not eq(default_first_four)
       end
     end
   end
@@ -31,10 +34,18 @@ RSpec.describe Deck do
     describe '#draw' do
       let(:drawn_card) { deck.draw }
 
-      it 'returns a card, the ace of spades' do
-        expect(drawn_card).to be_a(Card)
-        expect(drawn_card.suit).to eq(:spades)
-        expect(drawn_card.rank).to eq(:ace)
+      context 'with cards remaining' do
+        it 'returns a card, the ace of spades' do
+          expect(drawn_card).to be_a(Card)
+          expect(drawn_card.suit).to eq(:spades)
+          expect(drawn_card.rank).to eq(:ace)
+        end
+      end
+
+      context 'when out of cards' do
+        before { deck.size.times { deck.draw } }
+
+        it { expect(drawn_card).to be nil }
       end
     end
 
@@ -46,7 +57,35 @@ RSpec.describe Deck do
         expect(shuffled_deck).to eq(deck)
       end
       it 'reorders the cards' do
-        expect(first_four.map(&:to_s).join(', ')).to_not eq("ace of spades, two of spades, three of spades, four of spades")
+        default_first_four = "ace of spades, two of spades, three of spades, four of spades"
+        expect(first_four.map(&:to_s).join(', ')).to_not eq(default_first_four)
+      end
+    end
+
+    describe '#deal' do
+      let(:deck) { Deck.new }
+
+      it { expect(deck.deal).to be_a(Hand) }
+
+      context 'when there are more cards than the requested hand size' do
+        it { expect(deck.deal.size).to eq(1) }
+        it { expect(deck.deal(5).size).to eq(5) }
+      end
+
+      context 'when there are fewer cards in the deck than the requested hand size' do
+        before do
+          (deck.size - 2).times { deck.draw }
+        end
+
+        it { expect(deck.deal(5).size).to eq(2) }
+      end
+
+      context 'when there are no cards in the deck' do
+        before do
+          deck.size.times { deck.draw }
+        end
+
+        it { expect(deck.deal.size).to eq(0) }
       end
     end
   end

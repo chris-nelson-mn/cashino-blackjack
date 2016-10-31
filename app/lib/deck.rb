@@ -1,4 +1,7 @@
 class Deck
+  extend Forwardable
+  def_delegator :@cards, :size
+
   DEFAULT_SUITS = %w(spades clubs diamonds hearts).map(&:to_sym).freeze
   DEFAULT_RANKS = %w(ace two three four five six seven eight nine ten jack queen king).map(&:to_sym).freeze
 
@@ -33,5 +36,10 @@ class Deck
     @cards.shuffle!
 
     self
+  end
+
+  def deal(hand_size=1)
+    hand_size = [self.size, hand_size].min
+    Hand.new(Array.new(hand_size).map { draw })
   end
 end

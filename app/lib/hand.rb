@@ -1,4 +1,7 @@
 class Hand
+  extend Forwardable
+  def_delegators :@cards, :size, :length
+
   attr_reader :cards
 
   def initialize(cards=nil)
