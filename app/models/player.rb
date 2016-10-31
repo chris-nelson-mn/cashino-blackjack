@@ -3,26 +3,21 @@ class Player < ApplicationRecord
 
   attr_reader :hands
 
-  def initialize
-    @hands = []
-    active_hand = 0
-  end
-
   def hands=(hands)
+    self.update(active_hand: 0)
     @hands = hands
-    @active_hand = 0
   end
 
   def hand
-    @hands[@active_hand]
+    @hands[active_hand]
   end
 
   def hand=(hand)
-    self.hands = [hand]
+    @hands = [hand]
   end
 
   def next_hand
-    @active_hand += 1
+    self.update(active_hand: active_hand + 1)
     hand
   end
 end

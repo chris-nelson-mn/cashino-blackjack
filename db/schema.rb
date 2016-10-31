@@ -19,18 +19,19 @@ ActiveRecord::Schema.define(version: 20161031051149) do
     t.integer  "table_id"
     t.integer  "bet"
     t.integer  "seat"
+    t.integer  "active_hand", default: 0
     t.json     "hands_data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.index ["table_id"], name: "index_players_on_table_id", using: :btree
   end
 
   create_table "tables", force: :cascade do |t|
     t.json     "shoe_data"
     t.json     "dealer_hand_data"
-    t.integer  "active_player"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.integer  "active_player",    default: 0
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   add_foreign_key "players", "tables"

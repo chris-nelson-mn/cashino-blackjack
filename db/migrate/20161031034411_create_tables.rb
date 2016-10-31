@@ -3,7 +3,7 @@ class CreateTables < ActiveRecord::Migration[5.0]
     create_table :tables do |t|
       t.json :shoe_data
       t.json :dealer_hand_data
-      t.integer :active_player
+      t.integer :active_player, default: 0
 
       t.timestamps
     end
