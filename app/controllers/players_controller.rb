@@ -1,10 +1,9 @@
 class PlayersController < ApplicationController
-  before_action :set_player, only: [:hit, :split]
+  before_action :set_player, only: [:hit, :split, :stand]
 
   def hit
     table = @player.table
-    hand = params[:hand] ? @player.hands[params[:hand].to_i] : @player.hand
-    hand.add(table.shoe.draw)
+    @player.hand.add(table.shoe.draw)
 
     @player.save
     table.save
@@ -13,11 +12,24 @@ class PlayersController < ApplicationController
   end
 
   def split
-    @player.hands = @player.hand.split
-    @player.hands.each { |h| h.add(@player.table.shoe.draw) }
+    @player.hands = @player.hands.map do |h|
+      if h == @player.hand
+        split_hands = h.split
+        split_hands.each { |sh| sh.add(@player.table.shoe.draw) }
+      else
+        h
+      end
+    end
 
     @player.save
     @player.table.save
+
+    redirect_to table_path(@player.table)
+  end
+
+  def stand
+    @player.next_hand
+    @player.save
 
     redirect_to table_path(@player.table)
   end

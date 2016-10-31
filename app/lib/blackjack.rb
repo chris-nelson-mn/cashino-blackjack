@@ -36,6 +36,20 @@ module Blackjack
       end
     end
 
+    def blackjack?(hand)
+      hand.size == 2 && score(hand) == 21
+    end
+
+    def legal_actions(hand)
+      actions = []
+      return actions if busted?(hand) || blackjack?(hand)
+
+      actions += [:stand, :hit]
+      actions << :split if hand.splittable?
+
+      actions
+    end
+
     private
 
     def value_for(card, aces_high)

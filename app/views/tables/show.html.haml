@@ -9,16 +9,15 @@
       %tr
         %td
           %strong="Player #{ i + 1 }:"
-      - player.hands.each_with_index do |hand, i|
+      - player.hands.each do |hand|
         %tr
           %td
           - hand.cards.each do |card|
             %td
               =card.to_s
           %td="-- Score: #{ Blackjack.score(hand) }"
-          %td= link_to 'hit', hit_player_path(player, hand: i)
-          - if hand.splittable?
-            %td= link_to 'split', split_player_path(player)
+          - Blackjack.legal_actions(hand).each do |action|
+            %td= link_to action, controller: 'players', action: action, id: player.id
     %tr
       %td
         %strong="Dealer:"

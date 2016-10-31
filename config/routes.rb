@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     member do
       get :hit
       get :split
+      get :stand
     end
   end
 
