@@ -9,7 +9,24 @@ RSpec.describe Player do
   end
 
   it { is_expected.to have_attr_accessor_for(:bet) }
-  it { is_expected.to have_attr_accessor_for(:hands) }
+  it { is_expected.to have_attr_reader_for(:hands) }
+
+  describe '#hands=' do
+    let(:deck) { Deck.new(shuffled: true) }
+    let(:player) { Player.new.tap { |p| p.hands = [deck.deal(2), deck.deal(2)] } }
+    let(:new_hands) { [deck.deal(2), deck.deal(2)] }
+
+    it 'replaces the existing hands' do
+      player.hands = new_hands
+      expect(player.hands).to eq(new_hands)
+    end
+
+    it 'resets the active hand' do
+      player.next_hand
+      player.hands = new_hands
+      expect(player.hand).to eq(new_hands.first)
+    end
+  end
 
   describe '#next_hand' do
     let(:deck) { Deck.new(shuffled: true) }
@@ -58,19 +75,6 @@ RSpec.describe Player do
 
         it { expect(player.hand).to eq(player.hands[1]) }
       end
-    end
-  end
-
-  describe '#hands' do
-    let(:player) { Player.new }
-    let(:deck) { Deck.new(shuffled: true) }
-
-    context 'when the player has one hand' do
-
-    end
-
-    context 'when the player is playing multiple hands (e.g. they split their hand)' do
-
     end
   end
 end

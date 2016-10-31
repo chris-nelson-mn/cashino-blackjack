@@ -9,6 +9,7 @@ class Player
 
   def hands=(hands)
     @hands = hands
+    @active_hand = 0
   end
 
   def hand
