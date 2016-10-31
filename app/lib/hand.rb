@@ -19,12 +19,13 @@ class Hand
   end
 
   def split
-    raise PlayError, "Can't split a hand of more than 2 cards" if @cards.length != 2
+    raise PlayError, "Can only split a hand of 2 cards" if @cards.size != 2
+    raise PlayError, "Can only split a pair of the same rank" if @cards[0].rank != @cards[1].rank
 
     [Hand.new([@cards.first]), Hand.new([@cards.last])]
   end
 
   def splittable?
-    @cards.length == 2
+    @cards.length == 2 && @cards[0].rank == @cards[1].rank
   end
 end

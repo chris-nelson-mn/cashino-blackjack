@@ -24,7 +24,9 @@ Clone the repository, then run:
 
 ...which will give you a web server running locally. You can see the very
 rudimentary list of tables. Each table shows the current player(s), their
-hands, and the dealer's up card.
+hands, and the dealer's up card. You can hit and split hands, but you won't
+yet bust and there is no scoring or evaluation of win / loss / push. Also
+no betting, for the time being.
 
 ## 'Playing' on the command line
 
@@ -41,6 +43,7 @@ you can do the following:
   app> Blackjack.score(player_hand) # your current score, with aces counted to make the best score
   app> player_hand.add(deck.draw) # hit
   app> player_hands = player_hand.split # split; hands will eventually be played in order
+  app> Blackjack.busted?(player_hand) # has the player gone over 21?
   app> dealer_hand.add(deck.draw) # dealer acts
   app> Blackjack.result(player_hand, dealer_hand) # :win, :loss, or :push
 ```
