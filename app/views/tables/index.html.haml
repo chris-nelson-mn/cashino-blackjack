@@ -1,0 +1,16 @@
+%p#notice= notice
+%h1 Blackjack Tables
+%table
+  %thead
+    %tr
+      %th{:colspan => "4"}
+  %tbody
+    - @tables.each do |table|
+      %tr
+        %td
+          Table ##{table.id}
+        %td= link_to 'Show', table
+        %td= link_to 'Edit', edit_table_path(table)
+        %td= link_to 'Destroy', table, method: :delete, data: { confirm: 'Are you sure?' }
+%br/
+= link_to 'New Table', new_table_path
