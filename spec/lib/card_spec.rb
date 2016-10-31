@@ -1,6 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe Card do
+  describe '.from_parsed_json' do
+    let(:expected) { Card.new(:ace, :spades) }
+    let(:parsed_json) { { "rank" => "ace", "suit" => "spades" } }
+
+    it { expect(Card.from_parsed_json(parsed_json)).to eq(expected) }
+
+    context 'when suit is missing' do
+      let(:parsed_json) { { "rank" => "ace" } }
+
+      it { expect { Card.from_parsed_json(parsed_json) }.to raise_exception(ArgumentError) }
+    end
+
+    context 'when rank is missing' do
+      let(:parsed_json) { { "suit" => "spades" } }
+
+      it { expect { Card.from_parsed_json(parsed_json) }.to raise_exception(ArgumentError) }
+    end
+  end
+
   subject { Card.new(:ace, :spades) }
 
   describe '#suit' do

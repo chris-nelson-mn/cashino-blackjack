@@ -28,6 +28,15 @@ class Deck
     self.shuffle if options[:shuffled]
   end
 
+  def self.from_parsed_json(json)
+    raise ArgumentError "Missing cards from parsed JSON" if json['cards'].nil?
+    cards = json['cards'].map { |c| Card.from_parsed_json(c) }
+
+    Deck.new.tap do |deck|
+      deck.instance_variable_set(:@cards, cards)
+    end
+  end
+
   def draw
     @cards.pop
   end

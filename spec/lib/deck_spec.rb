@@ -28,6 +28,25 @@ RSpec.describe Deck do
     end
   end
 
+  describe '.from_parsed_json' do
+    let(:parsed_json) do
+      {
+        'cards' => [
+          {"rank"=>"king", "suit"=>"hearts"}, {"rank"=>"queen", "suit"=>"hearts"}, {"rank"=>"jack", "suit"=>"hearts"}, {"rank"=>"ten", "suit"=>"hearts"}
+        ]
+      }
+    end
+    let(:unmarshalled_deck) { Deck.from_parsed_json(parsed_json) }
+
+    it 'returns a Deck' do
+      expect(unmarshalled_deck).to be_a(Deck)
+    end
+    it 'sets the cards in the right order' do
+      expect(unmarshalled_deck.draw).to eq(Card.new(:ten, :hearts))
+      expect(unmarshalled_deck.draw).to eq(Card.new(:jack, :hearts))
+    end
+  end
+
   context 'with the default deck' do
     let(:deck) { Deck.new }
 
