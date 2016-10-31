@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Player, type: :model do
+RSpec.describe Player, type: :model, focus: true do
 
   describe '.new' do
     it 'returns a Player instance' do

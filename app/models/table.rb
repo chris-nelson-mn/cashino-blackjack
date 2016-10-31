@@ -5,10 +5,13 @@ class Table < ApplicationRecord
   before_save :marshall_card_data
 
   def deal
-    players.each { |p| p.hand = @shoe.deal }
-    @dealer_hand = @shoe.deal
-    players.each { |p| p.hand.add(@shoe.draw) }
-    @dealer_hand.add(@shoe.draw)
+    # Deal cards in 2 passes, as would be done live
+    hands = Array.new(players.count + 1)
+    hands.map! { @shoe.deal }
+    hands.each { |h| h.add(@shoe.draw) }
+
+    players.each_with_index { |p, i| p.hand = hands[i] }
+    @dealer_hand = hands.last
 
     self
   end
@@ -17,7 +20,7 @@ class Table < ApplicationRecord
     @dealer_hand ||= begin
       return nil if dealer_hand_data.nil?
 
-      cards = dealer_hand_data.map { |c| Card.from_parsed_json(c) }
+      cards = JSON.parse(dealer_hand_data).map { |c| Card.from_parsed_json(c) }
       Hand.new(cards)
     end
   end
@@ -26,7 +29,7 @@ class Table < ApplicationRecord
     @shoe ||= begin
       return nil if shoe_data.nil?
 
-      Deck.from_parsed_json(shoe_data)
+      Deck.from_parsed_json(JSON.parse(shoe_data))
     end
   end
 
