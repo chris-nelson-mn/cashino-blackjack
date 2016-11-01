@@ -2,7 +2,7 @@ class TablesController < ApplicationController
   before_action :set_table, only: [:show, :edit, :update, :destroy]
 
   def index
-    @tables = Table.all
+    @tables = Table.all.order('created_at ASC')
   end
 
   def show
@@ -20,6 +20,9 @@ class TablesController < ApplicationController
 
     respond_to do |format|
       if @table.save
+        Player.create(table: @table)
+        @table.deal
+
         format.html { redirect_to @table, notice: 'Table was successfully created.' }
         format.json { render :show, status: :created, location: @table }
       else

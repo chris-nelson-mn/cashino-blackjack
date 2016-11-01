@@ -13,16 +13,19 @@
         %tr
           %td
           - hand.cards.each do |card|
-            %td
-              =card.to_s
+            %td=card.to_s
           %td="-- Score: #{ Blackjack.score(hand) }"
-          - Blackjack.legal_actions(hand).each do |action|
-            %td= link_to action, controller: 'players', action: action, id: player.id
+          - if player.hand == hand
+            - Blackjack.legal_actions(hand).each do |action|
+              %td= link_to action, controller: 'players', action: action, id: player.id
+          - elsif player.turn_complete?
+            %td= Blackjack.result(hand, @table.dealer_hand).to_s
     %tr
       %td
         %strong="Dealer:"
-      %td="[card hidden]"
-      %td="#{ @table.dealer_hand.cards.last }"
+      %td= @table.round_complete? ? @table.dealer_hand.cards.first : "[card hidden]"
+      - @table.dealer_hand.cards.slice(1..-1).each do |card|
+        %td= card.to_s
 
 
 = link_to 'Edit', edit_table_path(@table)

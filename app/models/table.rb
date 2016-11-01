@@ -21,7 +21,7 @@ class Table < ApplicationRecord
     @dealer_hand ||= begin
       return nil if dealer_hand_data.nil?
 
-      cards = JSON.parse(dealer_hand_data).map { |c| Card.from_parsed_json(c) }
+      cards = dealer_hand_data.map { |c| Card.from_parsed_json(c) }
       Hand.new(cards)
     end
   end
@@ -30,8 +30,12 @@ class Table < ApplicationRecord
     @shoe ||= begin
       return nil if shoe_data.nil?
 
-      Deck.from_parsed_json(JSON.parse(shoe_data))
+      Deck.from_parsed_json(shoe_data)
     end
+  end
+
+  def round_complete?
+    players.map(&:turn_complete?).reduce { |a, b| a && b }
   end
 
   private
@@ -42,7 +46,7 @@ class Table < ApplicationRecord
   end
 
   def marshall_card_data
-    self.dealer_hand_data = dealer_hand.cards.to_json if dealer_hand
-    self.shoe_data = shoe.to_json if shoe
+    self.dealer_hand_data = dealer_hand.cards if dealer_hand
+    self.shoe_data = shoe if shoe
   end
 end

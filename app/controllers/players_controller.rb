@@ -4,6 +4,7 @@ class PlayersController < ApplicationController
   def hit
     table = @player.table
     @player.hand.add(table.shoe.draw)
+    @player.next_hand if Blackjack.busted?(@player.hand)
 
     @player.save
     table.save
