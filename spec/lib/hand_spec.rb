@@ -60,24 +60,31 @@ RSpec.describe Hand do
   end
 
   describe "#split" do
-    let(:card1) { Card.new(:ace, :spades) }
-    let(:card2) { Card.new(:two, :spades) }
-    let(:card3) { Card.new(:three, :spades) }
+    let(:ace)       { Card.new(:ace, :spades) }
+    let(:other_ace) { Card.new(:ace, :hearts) }
+    let(:two)       { Card.new(:two, :spades) }
+    let(:three)     { Card.new(:three, :spades) }
 
-    context 'a hand of 2 cards' do
-      let(:hand) { Hand.new [card1, card2] }
+    context 'a hand of 2 cards of the same rank' do
+      let(:hand) { Hand.new [ace, other_ace] }
 
-      it { expect(hand.split).to eq([Hand.new([card1]), Hand.new([card2])]) }
+      it { expect(hand.split).to eq([Hand.new([ace]), Hand.new([other_ace])]) }
+    end
+
+    context 'a hand of 2 different rank cards' do
+      let(:hand) { Hand.new [ace, two] }
+
+      it { expect { hand.split }.to raise_exception(PlayError) }
     end
 
     context 'a hand of 3 cards' do
-      let(:hand) { Hand.new [card1, card2, card3] }
+      let(:hand) { Hand.new [ace, two, three] }
 
       it { expect { hand.split }.to raise_exception(PlayError) }
     end
 
     context 'a hand of 1 card' do
-      let(:hand) { Hand.new [card1] }
+      let(:hand) { Hand.new [ace] }
 
       it { expect { hand.split }.to raise_exception(PlayError) }
     end
@@ -86,24 +93,31 @@ RSpec.describe Hand do
   describe "#splittable?" do
     subject { hand.splittable? }
 
-    let(:card1) { Card.new(:ace, :spades) }
-    let(:card2) { Card.new(:two, :spades) }
-    let(:card3) { Card.new(:three, :spades) }
+    let(:ace)       { Card.new(:ace, :spades) }
+    let(:other_ace) { Card.new(:ace, :hearts) }
+    let(:two)       { Card.new(:two, :spades) }
+    let(:three)     { Card.new(:three, :spades) }
 
-    context 'a hand of 2 cards' do
-      let(:hand) { Hand.new [card1, card2] }
+    context 'a hand of 2 different rank cards' do
+      let(:hand) { Hand.new [ace, two] }
+
+      it { is_expected.to be false }
+    end
+
+    context 'a hand of 2 cards of the same rank' do
+      let(:hand) { Hand.new [ace, other_ace] }
 
       it { is_expected.to be true }
     end
 
     context 'a hand of 3 cards' do
-      let(:hand) { Hand.new [card1, card2, card3] }
+      let(:hand) { Hand.new [ace, two, three] }
 
       it { is_expected.to be false }
     end
 
     context 'a hand of 1 card' do
-      let(:hand) { Hand.new [card1] }
+      let(:hand) { Hand.new [ace] }
 
       it { is_expected.to be false }
     end
