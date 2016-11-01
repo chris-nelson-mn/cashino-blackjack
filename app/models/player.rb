@@ -41,6 +41,10 @@ class Player < ApplicationRecord
     hand
   end
 
+  def turn_complete?
+    hand.nil?
+  end
+
   private
 
   def marshall_card_data
